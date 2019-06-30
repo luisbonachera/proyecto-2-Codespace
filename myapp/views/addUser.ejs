@@ -1,0 +1,134 @@
+<% include _header%>
+
+<% include _navbar%>
+<div class="container rounded tableList">
+    <br>
+    <h1 class="text-center">Registrar Usuario</h1>
+    <br>
+    <hr>
+    <div class="formAdd">
+        <form>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Usuario</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="username" placeholder="Username" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmail3 validation" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" placeholder="Email" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Confirmar Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password2" placeholder="Password">
+                </div>
+            </div>
+            <div id="divCheck" class="form-group row" hidden>
+                <div class="col-sm-2"><b>Rol Administrador</b> </div>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="checkAdmin" class="form-check-input" type="checkbox">
+                            <p class="adminCheckP">Administrador</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <input type="button" class="btn btn-primary" value="Crear" onclick="getToken()">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <p id="errorForm"></p>
+    </div>
+</div>
+
+<script>
+    const token = localStorage.getItem("token");
+    let decoded = '';
+    if(token){
+    //     location.href="/login";
+    // }else{
+        decoded = jwt_decode(token);
+        console.log(decoded._id);
+        if (decoded.isAdmin) {
+            console.log("entra")
+            document.getElementById("divCheck").removeAttribute("hidden");
+        }
+    }else{
+        token = '';
+    }
+    function getToken() {
+
+        const password = document.getElementById("password").value;
+        const password2 = document.getElementById("password2").value;
+
+        if (password == null || password == '' || password != password2) {//funciona con  ''
+
+            document.getElementById("errorForm").innerHTML = "Las contraseñas no coinciden";
+            location.href = "#"
+        } else {
+
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const isAdmin = document.getElementById("checkAdmin").checked;
+
+            if (username == '' || email == '') {
+                document.getElementById("errorForm").innerHTML = "Faltan campos por rellenar";
+            } else {
+
+                console.log(username);
+                console.log(email);
+                console.log(password);
+                console.log(isAdmin);
+                if (isAdmin == ""){
+                    isAdmin = false;
+                }
+                fetch("/api/users/", { //fetch es una función tipo promesa
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password,
+                        isAdmin: isAdmin,
+                    })
+
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("ok");
+                            // console.log(response.ok)
+                            location.href = "/users";
+                            ///molaria poner aqui para que te inicie sesion ya que te acabas de registrar
+                        }
+                        else {
+                            console.log("ha habido un error es response.ok");
+                           
+                        }
+                    })
+                    .catch(error => {
+                        res.send("Error al añadir ," + error);
+                    })
+            }
+        }
+    }
+
+</script>
+
+<% include _footer%>

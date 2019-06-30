@@ -1,0 +1,185 @@
+<% include _header %>
+
+
+<% include _navbar %>
+
+<div class="container rounded tableList">
+    <br>
+    <h1 class="text-center">Mi Lista de Series Publicadas</h1>
+    <br>
+    <hr>
+    <table class="table table-outline-info text-center">
+        <thead>
+            <tr id="listaHeader">
+                <th>Position</th>
+                <!-- <th>Imagen</th> -->
+                <th>Title</th>
+                <th>Genero</th>
+                <th>Year</th>
+                <th>Duracion</th>
+                <th>Capitulos</th>
+                <th>Edad Minima</th>
+                <!-- <th>Recomendado by</th> -->
+                <th>Ver</th>
+                <th>Editar</th>
+                <th id="colAdm2" hidden>Borrar</th>
+
+            </tr>
+        </thead>
+        <tbody id="lista">
+
+        </tbody>
+    </table>
+
+</div>
+<script>
+    const token = localStorage.getItem("token");
+    console.log(token);
+    // var decoded = '';
+
+    if (!token) {
+        location.href = "/login";
+    } else {
+        console.log("entra en elscrip")
+        let decoded = jwt_decode(token);
+        // console.log(decoded._id);
+        // document.getElementById("misLista").setAttribute("href", "/series/"+ decoded._id);
+        fetch("/api/series/" + decoded._id, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response => {
+                console.log("guay.ok");
+                console.log(response);
+                if (response.ok) {
+                    // console.log("falla o no")
+                    response.json()
+                        .then(json => {
+                            // console.log("guay2.then.json")
+                            console.log(json)
+                            const token = localStorage.getItem("token");
+                            decoded = jwt_decode(token);
+                            console.log(decoded._id);
+                            console.log("creando la tabla dinamica")
+                            // if (decoded.isAdmin) {
+                            //     document.getElementById("colAdm1").removeAttribute("hidden");
+                            //     document.getElementById("colAdm2").removeAttribute("hidden");
+                            // }
+                            let cont = 0;
+
+                            json.map(serie => {
+                                cont++;
+
+                                let tr = document.createElement("tr");
+                                document.getElementById("lista").appendChild(tr);
+
+                                let tdCont = document.createElement("td");
+                                tdCont.innerHTML = cont;
+                                tr.appendChild(tdCont);
+                                // let tdName = document.createElement("td");
+                                // tdName.innerHTML = serie.user;
+                                // tr.appendChild(tdName);
+
+                                let tdTitle = document.createElement("td");
+                                tdTitle.innerHTML = serie.title;
+                                tr.appendChild(tdTitle);
+
+                                // let tr2 = document.createElement("tr");
+                                // document.getElementById("lista").appendChild(tr2);
+
+                                // let tdSinopsis = document.createElement("td");
+                                // tdSinopsis.innerHTML = serie.sinopsis;
+                                // tr2.appendChild(tdSinopsis);
+
+                                // let tr3 = document.createElement("tr");
+                                // document.getElementById("lista").appendChild(tr3);
+
+                                // let td1 = document.createElement("td");
+                                // td1.innerHTML = serie.title;
+                                // tr.appendChild(td1);
+                                let td2 = document.createElement("td");
+                                td2.innerHTML = serie.genre;
+                                tr.appendChild(td2);
+                                let td3 = document.createElement("td");
+                                td3.innerHTML = serie.year;
+                                tr.appendChild(td3);
+                                let td4 = document.createElement("td");
+                                td4.innerHTML = serie.duration + " minutos";
+                                tr.appendChild(td4);
+                                let td5 = document.createElement("td");
+                                td5.innerHTML = serie.chapter + "Capitulos";
+                                tr.appendChild(td5);
+                                let td6 = document.createElement("td");
+                                td6.innerHTML = "Mayor de " + serie.age + " años";
+                                tr.appendChild(td6);
+
+                                let tr4 = document.createElement("tr");
+                                document.getElementById("lista").appendChild(tr4);
+
+                                //boton Ver un usuario
+                                let td8 = document.createElement("td");
+                                tr.appendChild(td8);
+                                let btnView = document.createElement("button");
+                                btnView.setAttribute("class", "btn btn-info");
+                                btnView.innerHTML = "Ver";
+                                btnView.onclick = () => {
+                                    // fetch("api/series", {
+                                    //     method: "GET"
+                                    // }).then(() => {
+                                    location.href = "/series" /*+ serie._id*/
+                                    // })
+                                };
+                                td8.appendChild(btnView);
+
+                                //boton Editar un usuario
+                                let td9 = document.createElement("td");
+                                tr.appendChild(td9);
+                                let btnEdit = document.createElement("button");
+                                btnEdit.setAttribute("class", "btn btn-info");
+                                btnEdit.innerHTML = "Editar";
+                                btnEdit.onclick = () => {
+                                    //     fetch("api/series/edit/"+ serie._id + "/" + decoded._id, {
+                                    //         method: "PUT"
+                                    //     }).then(() => {
+                                    location.href = "/series/edit/" + serie._id + "/" + decoded._id;
+                                    // })
+                                };
+                                td9.appendChild(btnEdit);
+
+                                if (decoded.isAdmin) {
+                                     document.getElementById("colAdm2").removeAttribute("hidden");
+                                    let td10 = document.createElement("td");
+                                    tr.appendChild(td10);
+                                    let btnDelete = document.createElement("button");
+                                    btnDelete.setAttribute("class", "btn btn-info");
+                                    btnDelete.innerHTML = "Borrar";
+                                    btnDelete.onclick = () => {
+                                        fetch("api/series/" + serie._id, {
+                                            method: "DELETE",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                                "Authorization": "Bearer " + token
+                                            }
+                                        }).then(() => {
+                                            location.href = "/series";
+                                            // console.log("estoy aqui")
+                                        })
+                                    };
+                                    td10.appendChild(btnDelete);
+                                }
+                            })
+                        })
+                    console.log("hay ido guay")
+
+                } else {
+                    //response.ok ha fallado
+                    console.log("error, response.ok");
+                }
+            })
+    }
+</script>
+
+<%include _footer%>

@@ -1,0 +1,401 @@
+body {
+  /* padding: 50px; */
+  /* font-family: 'njnaruto' !important; */
+  /* font-family: 'Anime Ace 2.0 BB', arial !important; */
+  /* font-family: 'Indie Flower', cursive !important; */
+  /* font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; */
+  /* font-family: 'Varela Round', sans-serif; */
+}
+
+body, .btn, .form-control, .dropdown-menu {
+  /*********************************/
+  font-size: 2rem !important;
+  color: black !important;
+}
+.tituloIndex{
+  width: 600px !important;
+  padding-top: 200px;
+  /* font-size: rem !important; */
+
+}
+h1{
+  font-family: 'Indie Flower', cursive !important;
+  font-size: 5.5rem !important;
+}
+.btn-info , .btn-success, .btn-danger , .btn-primary {
+  /* color: #fff !important; */
+  /* background-color: #B177CD !important;
+  border-color: #B177CD !important; */
+  background-color: #E2C9F2 !important;
+  border-color: #E2C9F2 !important;
+  
+}
+b:hover{
+  color: #5948BB !important;
+}
+.btn-info:hover , .btn-success:hover, .btn-danger:hover , .btn-primary:hover  {
+  /* color: #fff !important; */
+  /* background-color: #B177CD !important;
+  border-color: #B177CD !important; */
+  background-color: rgba(166, 50, 238, 0.438) !important;
+  border-color: #E2C9F2 !important;
+  
+}
+/* a {
+  color: #00B7FF;
+} */
+.conainer{
+  width: auto !important;
+}
+.paralax {
+  width: 100%;
+  height: 100%;
+  background-image: URL(/images/background.jpg);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.logo {
+  height: 120px;
+  width: auto;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: transparent !important;
+}
+
+.navbar {
+  margin-bottom: 100px !important;
+}
+
+.dropdown-menu {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tableList {
+  background-color: rgb(255, 255, 255, 0.7);
+}
+
+.adminCheckP {
+  margin-left: 20px;
+}
+
+.formAdd {
+  /* width: 500px; */
+}
+
+.form-control {
+  box-shadow: none;
+  font-weight: normal;
+  font-size: 100px;
+  /***/
+}
+
+.form-control:focus {
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  /* border-color: #33cabb; **********************************************/
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-header.col {
+  padding: 0 !important;
+}
+
+.navbar {
+  background: rgb(255, 255, 255, 0);
+  padding-left: 16px;
+  padding-right: 16px;
+  /* border-bottom: 1px solid rgb(223, 227, 232); */
+  /* border-radius: 0; */
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+  background-color: transparent !important;
+}
+
+.nav-link img {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  margin: -8px 0;
+  float: left;
+  margin-right: 10px;
+}
+
+.navbar .navbar-brand, .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
+  padding-left: 0;
+  font-size: 25px;
+  /**20 titulo del nav***/
+  padding-right: 50px;
+}
+
+.navbar .navbar-brand b {
+  font-weight: bold;
+  font-size: 35px;
+  /* color: #33cabb;	 */
+  /* color: black; */
+  color: rgb(255, 255, 255, 0.8);
+  /* color: rgb(216, 203, 15);	************ */
+}
+
+.navbar .form-inline {
+  display: inline-block;
+}
+
+.navbar .nav li {
+  position: relative;
+}
+
+.navbar .nav li a b {/***************************letras navbar**/
+  font-family: 'Indie Flower', cursive !important;
+  font-size: 4rem;
+  color: black;
+  /* color: rgba(255, 255, 255, 0.9); */
+  /* color: #888; */
+}
+
+.search-box {
+  position: relative;
+}
+
+/* .search-box input {
+      padding-right: 35px;
+  border-color: #dfe3e8;
+      border-radius: 4px !important;
+  box-shadow: none
+  }
+.search-box .input-group-addon {
+      min-width: 35px;
+      border: none;
+      background: transparent;
+      position: absolute;
+      right: 0;
+      z-index: 9;
+      padding: 7px;
+  height: 100%;
+  }
+  .search-box i {
+      color: #a0a5b1;
+  font-size: 3px; 
+  } */
+
+/* /********Color de boton del login al estar activo*/
+
+.navbar .nav .btn-primary, .navbar .nav .btn-primary:active {
+  color: rgba(255, 255, 255);
+  /* color: #fff; */
+  /* background: #33cabb; */
+  background: rgb(198, 201, 189);
+  /********Color boton****/
+  padding-top: 8px;
+  padding-bottom: 6px;
+  vertical-align: middle;
+  border: none;
+}
+
+.navbar .nav .btn-primary:hover, .navbar .nav .btn-primary:focus {
+  color: rgba(255, 255, 255);
+  /* color:  rgba(128, 128, 128); */
+  outline: none;
+  background: rgba(255, 255, 255, 0);
+  /* background: rgb(216, 203, 15);	 */
+}
+
+.navbar .navbar-right li:first-child a {
+  padding-right: 30px;
+}
+
+.navbar .nav-item {
+  margin-left: 20px;
+}
+
+.navbar .nav-item i {
+  font-size: 18px;
+  /****/
+}
+
+.navbar .dropdown-item i {
+  font-size: 16px;
+  /****/
+  min-width: 22px;
+  /****/
+}
+
+.navbar ul.nav li.active a, .navbar ul.nav li.open>a {
+  background: transparent !important;
+}
+
+.navbar .nav .get-started-btn {
+  min-width: 120px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.navbar ul.nav li.open>a.get-started-btn {
+  color: rgba(255, 255, 255);
+  /**********no se que hacen esto**************/
+  background: #31bfb1 !important;
+}
+
+.navbar .dropdown-menu {
+  border-radius: 1px;
+  border-color: rgba(255, 255, 255, 0.5);
+  /* border-color: #e5e5e5; */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+}
+
+.navbar .nav .dropdown-menu li {
+  color: #999;
+  font-weight: normal;
+}
+
+.navbar .nav .dropdown-menu li a, .navbar .nav .dropdown-menu li a:hover, .navbar .nav .dropdown-menu li a:focus {
+  padding: 8px 20px;
+  line-height: normal;
+}
+
+.navbar .navbar-form {
+  border: none;
+}
+
+.navbar .dropdown-menu.form-wrapper {
+  width: 280px;
+  padding: 20px;
+  left: auto;
+  right: 0;
+  font-size: 14px;
+  /**** espacios del droptown**/
+}
+
+.navbar .dropdown-menu.form-wrapper a {
+  color: rgba(255, 255, 255, 0.74);
+  padding: 0 !important;
+}
+
+.navbar .dropdown-menu.form-wrapper a:hover {
+  text-decoration: underline;
+}
+
+.navbar .form-wrapper .hint-text {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 13px;
+  /****/
+}
+
+/*botones sociales*/
+
+.navbar .form-wrapper .social-btn .btn, .navbar .form-wrapper .social-btn .btn:hover {
+  color: white;
+  /* color: #fff; */
+  margin: 0;
+  padding: 0 !important;
+  font-size: px;
+  /* botones redes sociales***/
+  border: none;
+  transition: all 0.4s;
+  text-align: center;
+  line-height: 34px;
+  width: 47%;
+  text-decoration: none;
+}
+
+.navbar .social-btn .btn-primary {
+  background: #507cc0;
+}
+
+.navbar .social-btn .btn-primary:hover {
+  background: #4676bd;
+}
+
+.navbar .social-btn .btn-info {
+  background: #64ccf1;
+}
+
+.navbar .social-btn .btn-info:hover {
+  background: #4ec7ef;
+}
+
+.navbar .social-btn .btn i {
+  margin-right: 5px;
+  font-size: 16px;
+  /**cuadro del boton redes sociales**/
+  position: relative;
+  top: 2px;
+}
+
+.navbar .form-wrapper .form-footer {
+  text-align: center;
+  padding-top: 10px;
+  font-size: 13px;
+  /**olvide mi contraseña*/
+}
+
+.navbar .form-wrapper .form-footer a:hover {
+  text-decoration: underline;
+}
+
+.navbar .form-wrapper .checkbox-inline input {
+  margin-top: 3px;
+}
+
+.or-seperator {
+  margin-top: 32px;
+  text-align: center;
+  border-top: 1px solid #e0e0e0;
+}
+
+/**or separador de redes sociales login*/
+
+.or-seperator b {
+  color: #666;
+  padding: 0 8px;
+  width: 30px;
+  height: 30px;
+  font-size: 13px;
+  text-align: center;
+  line-height: 26px;
+  background: #fff;
+  /* background: #fff; */
+  display: inline-block;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  position: relative;
+  top: -15px;
+  z-index: 1;
+}
+
+.navbar .checkbox-inline {
+  font-size: 13px;
+  /* acepto las condiciones al registrarme*/
+}
+
+.navbar .navbar-right .dropdown-toggle::after {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .form-inline .input-group {
+    width: 300px;
+    margin-left: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar .dropdown-menu.form-wrapper {
+    width: 100%;
+    padding: 10px 15px;
+    background: transparent;
+    border: none;
+  }
+  .navbar .form-inline {
+    display: block;
+  }
+  .navbar .input-group {
+    width: 100%;
+  }
+  .navbar .nav .btn-primary, .navbar .nav .btn-primary:active {
+    display: block;
+  }
+}

@@ -1,0 +1,73 @@
+<%include _header%>
+
+<%include _navbar%>
+<div class="container rounded tableList">
+        <br>
+        <h1 class="text-center">Iniciar Sesion</h1>
+        <br>
+        <hr>
+        <form>
+            <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre de usuario</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="username" placeholder="Nombre de usuario">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <input type="button" class="btn btn-primary" value="Iniciar Sesion" onclick="getToken()">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <a href="/users/add" class="button text-dark">Registarme</a>
+                </div>
+            </div>
+        </form>
+        <div>
+                <p id="errorList"></p>
+            </div>
+    </div>
+</div>
+    <script>
+        function getToken() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            fetch("/api/auth", { //fetch es una función tipo promesa
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("ok");
+                        // console.log(response.ok)
+                        response.text() //el text()es una promesa
+                            .then(text => {
+                                // document.getElementById("token").innerHTML = text;
+                                localStorage.setItem('token', text);
+                                console.log(text);
+                                location.href = "/users";
+                            });
+                    }
+                    else {
+                        document.getElementById("errorList").innerHTML = 'Usuario o Contraseña incorrectos';
+                    }
+                })
+                .catch(err=>{
+                    
+                    document.getElementById("errorList").value = "Usuario o Contraseña incorrectos.";
+                    console.log("La lista es vacia", err);
+                })
+        }
+    </script>
+
+<%include _footer%>

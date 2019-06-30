@@ -1,0 +1,178 @@
+<% include _header%>
+
+<% include _navbar%>
+<div class="container rounded tableList">
+    <br>
+    <h1 class="text-center">Editar una Serie</h1>
+    <br>
+    <hr>
+    <div class="formAdd">
+        <form>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Titulo</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" placeholder="Title" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmail3 validation" class="col-sm-2 col-form-label">Genero</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="genre" placeholder="Genero" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Año</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="year" placeholder="Año" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Capitulos</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="chapter" placeholder="Capitulos">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Duracion</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="duration" placeholder="Duracion en minutos">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Edad minima</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="age" placeholder="Edad Mimina">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Sinopsis</label>
+                <div class="col-sm-10">
+                    <input type="textarea" class="form-control" id="sinopsis" placeholder="Sinopsis">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <input type="button" class="btn btn-primary" value="Editar" onclick="editToken()">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <p id="errorForm"></p>
+    </div>
+</div>
+
+<script>
+    const token = localStorage.getItem("token");
+    let decoded = "";
+    if (!token) {
+        location.href = "/login";
+    } else {
+        decoded = jwt_decode(token);
+        // console.log(token);
+        // console.log(decoded);
+        const idU = location.pathname.split(["/"]).slice(-1)[0];
+        const idS = location.pathname.split(["/"]).slice(-2)[0];
+        // console.log(idS);
+        // console.log(idU);
+
+        fetch("/api/series/" + idS + "/" + decoded._id, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    response.json()
+                        // console.log("respuesta ok de recoger la serie")
+                        .then(json => {
+                            // console.log(json.title)
+                            // console.log(json.genre)
+                            // console.log(json.year)
+                            // console.log(json.chapter)
+                            console.log(json.duration)
+                            console.log(json.age)
+                            let cont = 0;
+                            document.getElementById("title").value = json.title;
+                            document.getElementById("genre").value = json.genre;
+                            document.getElementById("year").value = json.year;
+                            document.getElementById("chapter").value = json.chapter;
+                            document.getElementById("duration").value = json.duration;
+                            document.getElementById("age").value = json.age;
+                            document.getElementById("sinopsis").value = json.sinopsis;
+
+                        })
+                    // .catch(err => {
+                    //     res.status(400).send('El usuario no Existe ', err)
+                    // })
+                }
+            })
+            .catch(err => {
+                console.log('El usuario no Existe ', err);
+            })
+    }
+    function editToken() {
+
+        const title = document.getElementById("title").value;
+        const genre = document.getElementById("genre").value;
+        const year = document.getElementById("year").value;
+        const chapter = document.getElementById("chapter").value;
+        const sinopsis = document.getElementById("sinopsis").value;
+        const duration = document.getElementById("duration").value;
+        const age = document.getElementById("age").value;
+
+        if (!title || !genre || !year || !chapter || !sinopsis || !duration || !age) {
+
+            document.getElementById("errorForm").innerHTML = "Faltan campos por rellenar";
+            location.href = "#"
+        } else {
+            console.log(title);
+            console.log(genre);
+            console.log(year);
+            console.log(chapter);
+            console.log(sinopsis);
+            console.log(duration);
+            console.log(year);
+            console.log(age);
+            const idU = location.pathname.split(["/"]).slice(-1)[0];
+            const idS = location.pathname.split(["/"]).slice(-2)[0];
+            fetch("/api/series/edit/" + idS + "/" + idU, { //fetch es una función tipo promesa
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({
+                    title: title,
+                    genre: genre,
+                    year: year,
+                    chapter: chapter,
+                    sinopsis: sinopsis,
+                    duration: duration,
+                    year: year,
+                    age: age
+                })
+
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("ok");
+                        // console.log(response.ok)
+                        location.href = "/series";
+                    }
+                    else {
+                        console.log("ha habido un error es response.ok");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error al añadir ," + error);
+                    // res.send("Error al añadir ," + error);
+                })
+        }
+    }
+
+</script>
+
+<% include _footer%>

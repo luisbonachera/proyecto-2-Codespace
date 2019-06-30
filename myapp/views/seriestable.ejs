@@ -1,0 +1,171 @@
+<% include _header %>
+
+
+<% include _navbar %>
+
+<div class="container rounded tableList">
+    <br>
+    <h1 class="text-center">Lista de Series</h1>
+    <br>
+    <hr>
+    <table class="table table-outline-info text-center">
+        <thead>
+            <tr id="listaHeader">
+                <th>Position</th>
+                <!-- <th>Imagen</th> -->
+                <th>Title</th>
+                <th>Genero</th>
+                <th>Year</th>
+                <th>Duracion</th>
+                <th>Capitulos</th>
+                <th>Edad Minima</th>
+                <th>Recomendado by</th>
+                <th>Ver</th>
+                <th id="colAdm1" hidden>Editar</th>
+                <th id="colAdm2" hidden>Borrar</th>
+
+            </tr>
+        </thead>
+        <tbody id="lista">
+
+        </tbody>
+    </table>
+
+</div>
+<script>
+    const token = localStorage.getItem("token");
+    // var decoded = '';
+
+    if (!token) {
+        location.href = "/login";
+    } else {
+
+        decoded = jwt_decode(token);
+        console.log(decoded._id);
+        // document.getElementById("misLista").setAttribute("href", "/series/"+ decoded._id);
+        fetch("api/series", {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response => {
+                console.log("guay.ok")
+                if (response.ok) {
+                    console.log("falla o no")
+                    response.json()
+                        .then(json => {
+                            console.log("guay2.then.json")
+                            console.log(json)
+                            const token = localStorage.getItem("token");
+                            decoded = jwt_decode(token);
+                            console.log(decoded._id);
+                            if (decoded.isAdmin) {
+                                document.getElementById("colAdm1").removeAttribute("hidden");
+                                document.getElementById("colAdm2").removeAttribute("hidden");
+                            }
+                            let cont = 0;
+
+                            json.map(serie => {
+                                cont++;
+
+                                let tr = document.createElement("tr");
+                                document.getElementById("lista").appendChild(tr);
+
+                                let tdNum = document.createElement("td");
+                                tdNum.innerHTML = cont;
+                                tr.appendChild(tdNum);
+
+                                // let td = document.createElement("td");
+                                // // td.innerHTML = serie.img;
+                                // tr.appendChild(td);
+                                let td1 = document.createElement("td");
+                                td1.innerHTML = serie.title;
+                                tr.appendChild(td1);
+                                let td2 = document.createElement("td");
+                                td2.innerHTML = serie.genre;
+                                tr.appendChild(td2);
+                                let td3 = document.createElement("td");
+                                td3.innerHTML = serie.year;
+                                tr.appendChild(td3);
+                                let td4 = document.createElement("td");
+                                td4.innerHTML = serie.duration + " minutos" ;
+                                tr.appendChild(td4);
+                                let td5 = document.createElement("td");
+                                td5.innerHTML = serie.chapter + " Capitulos";
+                                tr.appendChild(td5);
+                                let td6 = document.createElement("td");
+                                td6.innerHTML = "Mayor de " + serie.age + " años";
+                                tr.appendChild(td6);
+                                let td7 = document.createElement("td");
+                                td7.innerHTML = serie.user.username;
+                                tr.appendChild(td7);
+
+                                //boton Ver un usuario
+                                let td8 = document.createElement("td");
+                                tr.appendChild(td8);
+                                let btnView = document.createElement("button");
+                                btnView.setAttribute("class", "btn btn-info");
+                                btnView.innerHTML = "Ver";
+                                btnView.onclick = () => {
+                                    // fetch("api/series", {
+                                    //     method: "GET"
+                                    // }).then(() => {
+                                        location.href = "/series" /*+ serie._id*/
+                                    // })
+                                };
+                                td8.appendChild(btnView);
+
+                                if (decoded.isAdmin) {
+                                    console.log(decoded.isAdmin)
+                                    console.log("soy Admin- boton Edit")
+
+                                    let td9 = document.createElement("td");
+                                    tr.appendChild(td9);
+                                    let btnEdit = document.createElement("button");
+                                    btnEdit.setAttribute("class", "btn btn-info");
+                                    btnEdit.innerHTML = "Editar";
+                                    btnEdit.onclick = () => {
+                                        //     fetch("api/series/edit/"+ serie._id + "/" + decoded._id, {
+                                        //         method: "PUT"
+                                        //     }).then(() => {
+                                        location.href = "/series/edit/" + serie._id + "/" + decoded._id;
+                                        // })
+                                    };
+                                    td9.appendChild(btnEdit);
+
+                                    let td10 = document.createElement("td");
+                                    tr.appendChild(td10);
+                                    let btnDelete = document.createElement("button");
+                                    btnDelete.setAttribute("class", "btn btn-info");
+                                    btnDelete.innerHTML = "Borrar";
+                                    btnDelete.onclick = () => {
+                                        fetch("api/series/" + serie._id, {
+                                            method: "DELETE",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                                "Authorization": "Bearer " + token
+                                            }
+                                        }).then(() => {
+                                            location.href = "/series";
+                                            // console.log("estoy aqui")
+                                        })
+                                    };
+                                    td10.appendChild(btnDelete);
+                                    
+                                }
+
+
+                            })
+                        })
+                        console.log("hay ido guay")
+
+                } else {
+                    //response.ok ha fallado
+                    console.log("error, response.ok");
+                }
+            })
+    }
+</script>
+
+<%include _footer%>

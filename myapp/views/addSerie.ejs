@@ -1,0 +1,131 @@
+<% include _header%>
+
+<% include _navbar%>
+<div class="container rounded tableList">
+    <br>
+    <h1 class="text-center">Registrar una Serie</h1>
+    <br>
+    <hr>
+    <div class="formAdd">
+        <form>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Titulo</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" placeholder="Title" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmail3 validation" class="col-sm-2 col-form-label">Genero</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="genre" placeholder="Genero" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Año</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="year" placeholder="Año" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Capitulos</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="chapter" placeholder="Capitulos">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Duracion</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="duration" placeholder="Duracion en minutos">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Edad minima</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="age" placeholder="Edad Mimina">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Sinopsis</label>
+                <div class="col-sm-10">
+                    <input type="textarea" class="form-control" id="sinopsis" placeholder="Sinopsis">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <input type="button" class="btn btn-primary" value="Crear" onclick="getToken2()">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <p id="errorForm"></p>
+    </div>
+</div>
+
+<script>
+    const token = localStorage.getItem("token");
+    let decoded = '';
+    if (!token) {
+        location.href = "/login";
+    }
+    function getToken2() {
+
+        const title = document.getElementById("title").value;
+        const genre = document.getElementById("genre").value;
+        const year = document.getElementById("year").value;
+        const chapter = document.getElementById("chapter").value;
+        const sinopsis = document.getElementById("sinopsis").value;
+        const duration = document.getElementById("duration").value;
+        const age = document.getElementById("age").value;
+
+        if (!title || !genre || !year || !chapter || !sinopsis || !duration || !age) {
+
+            document.getElementById("errorForm").innerHTML = "Faltan campos por rellenar";
+            location.href = "#"
+        } else {
+            // console.log(title);
+            // console.log(genre);
+            // console.log(year);
+            // console.log(chapter);
+            // console.log(sinopsis);
+            // console.log(duration);
+            // console.log(year);
+            // console.log(age);
+            fetch("/api/series/", { //fetch es una función tipo promesa
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({
+                    title: title,
+                    genre: genre,
+                    year: parseInt(year),
+                    chapter: parseInt(chapter),
+                    sinopsis: sinopsis,
+                    duration: parseInt(duration),
+                    year: parseInt(year),
+                    age: parseInt(age)
+                })
+
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("ok");
+                        // console.log(response.ok)
+                        location.href = "/series";
+                    }
+                    else {
+                        console.log("ha habido un error es response.ok");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error al añadir ," + error);
+                    // res.send("Error al añadir ," + error);
+                })
+        }
+    }
+
+</script>
+
+<% include _footer%>

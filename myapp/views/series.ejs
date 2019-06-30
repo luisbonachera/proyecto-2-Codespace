@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<% include _header %>
+
+<body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card col-3" style="width:400px">
+                <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title">John Doe</h4>
+                    <p class="card-text">tipo serie</p>
+                    <p class="card-text">sinopsis</p>
+                    <a href="#" class="btn btn-primary">ver</a>
+                </div>
+            </div>
+            <div class="card col-3" style="width:400px">
+                <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title">John Doe</h4>
+                    <p class="card-text">tipo serie</p>
+                    <p class="card-text">sinopsis</p>
+                    <a href="#" class="btn btn-primary">ver</a>
+                </div>
+            </div>
+            <div class="card col-3" style="width:400px">
+                <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title">John Doe</h4>
+                    <p class="card-text">tipo serie</p>
+                    <p class="card-text">sinopsis</p>
+                    <a href="#" class="btn btn-primary">ver</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card col-3" style="width:400px">
+                <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title">John Doe</h4>
+                    <p class="card-text">tipo serie</p>
+                    <p class="card-text">sinopsis</p>
+                    <a href="#" class="btn btn-primary">ver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        const token = localStorage.getItem("token");
+        var decoded = '';
+
+        if (!token) {
+            location.href = "/login/";
+        } else {
+
+            decoded = jwt_decode(token);
+            console.log(decoded._id);
+
+
+            fetch("api/users", {
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json()
+
+                            .then(json => {
+                                console.log(json)
+                                let cont = 0;
+
+                                //listar datos de usuarios siendo usuario normal
+                                if (!decoded.isAdmin) {
+                                    let th = document.createElement("th");
+                                    th.innerHTML = 'Ver';
+                                    document.getElementById("listaHeader").appendChild(th);
+
+                                    let th2 = document.createElement("th");
+                                    th2.innerHTML = 'Borrar';
+                                    document.getElementById("listaHeader").appendChild(th2);
+
+                                    for (let i = 0; i < json.length; i++) {
+                                        cont++;
+
+                                        let tr = document.createElement("tr");
+                                        document.getElementById("lista").appendChild(tr);
+
+                                        let tdNum = document.createElement("td");
+                                        tdNum.innerHTML = cont;
+                                        tr.appendChild(tdNum);
+
+                                        let td = document.createElement("td");
+                                        td.innerHTML = json[i].username;
+                                        tr.appendChild(td);
+
+                                        //boton Ver un usuario
+                                        let td2 = document.createElement("td");
+                                        tr.appendChild(td2);
+                                        let btnView = document.createElement("button");
+                                        btnView.setAttribute("class", "btn btn-info");
+                                        btnView.innerHTML = "Ver";
+                                        btnView.onclick = () => {
+                                            fetch("api/users", {
+                                                method: "GET"
+                                            }).then(() => {
+                                                location.href = "/users/" + json[i]._id
+                                            })
+                                        };
+                                        td2.appendChild(btnView);
+
+                                        let td3 = document.createElement("td");
+                                        tr.appendChild(td3);
+
+                                        if (decoded._id == json[i]._id) {
+                                            //boton editar usaurio
+                                            let btnUpdate = document.createElement("button");
+                                            btnUpdate.setAttribute("class", "btn btn-success");
+                                            btnUpdate.innerHTML = "Editar";
+                                            btnUpdate.onclick = () => {
+                                                    location.href = "/users/edit/" + json[i]._id;
+                                            };
+                                            td3.appendChild(btnUpdate);
+                                        }
+
+                                    }
+                                    //listar datos de usuario siendo Admin
+                                } else {
+                                    //cabecera de la tabla
+                                    let th1 = document.createElement("th");
+                                    th1.innerHTML = 'Email';
+
+                                    let th2 = document.createElement("th");
+                                    th2.innerHTML = 'Rol';
+
+                                    let th3 = document.createElement("th");
+                                    th3.innerHTML = 'Ver';
+
+                                    let th4 = document.createElement("th");
+                                    th4.innerHTML = 'Editar';
+
+                                    let th5 = document.createElement("th");
+                                    th5.innerHTML = 'Borrar';
+
+                                    document.getElementById("listaHeader").appendChild(th1);
+                                    document.getElementById("listaHeader").appendChild(th2);
+                                    document.getElementById("listaHeader").appendChild(th3);
+                                    document.getElementById("listaHeader").appendChild(th4);
+                                    document.getElementById("listaHeader").appendChild(th5);
+
+
+
+                                    //datos de usuario en la tabla
+                                    json.map(user => {
+                                        cont++;
+                                        console.log("aaaaa");
+
+                                        let tr = document.createElement("tr");
+                                        document.getElementById("lista").appendChild(tr);
+
+                                        let tdNum = document.createElement("td");
+                                        tdNum.innerHTML = cont;
+                                        tr.appendChild(tdNum);
+
+                                        let td = document.createElement("td");
+                                        td.innerHTML = user.username;
+                                        tr.appendChild(td);
+
+                                        let td2 = document.createElement("td");
+                                        td2.innerHTML = user.email;
+                                        tr.appendChild(td2);
+
+                                        let td3 = document.createElement("td");
+                                        td3.innerHTML = user.isAdmin ? "Administrador" : "Usuario";
+                                        tr.appendChild(td3);
+
+                                        //boton Ver un usuario
+                                        let td4 = document.createElement("td");
+                                        tr.appendChild(td4);
+                                        let btnView = document.createElement("button");
+                                        btnView.setAttribute("class", "btn btn-info");
+                                        btnView.innerHTML = "Ver";
+                                        btnView.onclick = () => {
+                                            fetch("api/users", {
+                                                method: "GET"
+                                            }).then(() => {
+                                                location.href = "/users/" + user._id
+                                            })
+                                        };
+                                        td4.appendChild(btnView);
+
+                                        //boton editar usaurio
+                                        let td5 = document.createElement("td");
+                                        tr.appendChild(td5);
+                                        let btnUpdate = document.createElement("button");
+                                        btnUpdate.setAttribute("class", "btn btn-success");
+                                        btnUpdate.innerHTML = "Editar";
+                                        btnUpdate.onclick = () => {
+                                            location.href = "/users/edit/" + user._id;
+                                        };
+                                        td5.appendChild(btnUpdate);
+
+                                        //boton Eliminar usuario
+                                        let td6 = document.createElement("td");
+                                        tr.appendChild(td6);
+                                        let btnDelete = document.createElement("button");
+                                        btnDelete.setAttribute("class", "btn btn-danger");
+                                        btnDelete.innerHTML = "Borrar";
+                                        btnDelete.onclick = () => {
+                                            fetch("api/users/" + user._id, {
+                                                method: "DELETE",
+                                                headers: {
+                                                    "Content-type": "application/json",
+                                                    Authorization: "Bearer " + token
+                                                }
+                                            }).then(() => {
+                                                location.href = "/users"; // me redirije a mi pagina de users
+                                                // me refresca la pagina que le estoy diciendo
+                                            });
+                                        };
+                                        td6.appendChild(btnDelete);
+                                    })
+                                }
+
+                            });
+                    } else {
+                        //response.ok ha fallado
+                        console.log("error, response.ok");
+                    }
+                })
+        }
+    </script>
+
+
+    <script>
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
