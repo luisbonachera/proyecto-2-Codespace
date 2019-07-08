@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const authController = require('../controllers/authController');
 const seriesController = require('../controllers/seriesController');
+
 // te crea el token
 router.post('/auth', authController.find);
 // lita el usuario id
