@@ -16,9 +16,8 @@ authController.find = (req, res) => {
     Mongo.MongoClient.connect(mongoUrl, (err, client) => {
         assert.equal(null, err);
         console.log("Connected successfully to server");
-
         const db = client.db(mongoDBName);
-
+        let hola;
         //comprobar que es correcto el user con su pass
         const query = db.collection("users").find({
             username: req.body.username,
