@@ -157,7 +157,7 @@ authController.add = (req, res) => {
                 ...(add.username != "" && { username: add.username }),
                 ...(add.password != "" && { password: md5(add.password) }),
                 ...(add.email != "" && { email: add.email }),
-                isAdmin : false
+                ...(add.isAdmin != null && { isAdmin: add.isAdmin })
             }
             // if (tengoPermiso) {
             //     user = {
