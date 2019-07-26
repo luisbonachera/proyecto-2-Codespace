@@ -7,8 +7,10 @@ const seriesController = require('../controllers/seriesController');
 
 // te crea el token
 router.post('/auth', authController.find);
+
 // lita el usuario id
 router.get('/users/:id', authController.listOne);
+
 // listar usuarios
 router.get('/users', (req, res) => {
   // const token = localStorage.getItem('token');
@@ -25,6 +27,7 @@ router.get('/users', (req, res) => {
     res.status(400).send('El token no es válido o no hay token');
   }
 });
+
 // añadir un usuario
 router.post('/users', authController.add);
 // editar un usuario
